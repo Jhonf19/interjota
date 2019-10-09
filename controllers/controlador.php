@@ -83,13 +83,12 @@ class Controlador
     function createPro(){
     if (isset($_SESSION['admin'])){
       $data=[
-        'codigo'=>$_POST['codigo'],
         'nombre'=>$_POST['nombre'],
         'costo'=>$_POST['costo'],
         'precio'=>$_POST['precio'],
         'stock'=>$_POST['stock']
       ];
-      // echo "<pre>"; print_r($data); echo "</pre>";
+
       $res = $this->o->createProd($data);
       if ($res) {
         echo "<script language='javascript'>";
@@ -127,6 +126,90 @@ class Controlador
      }
 
    }
+
+     function editarProducto(){
+    if (isset($_SESSION['admin'])) {
+      if (isset($_POST['btn_editarPro']))
+      {
+        $data2=[
+          'id_producto'=>$_POST['id_producto'],
+          'nombre'=>$_POST['nombre'],
+          'costo'=>$_POST['costo'],
+          'precio'=>$_POST['precio']
+        ];
+        $res = $this->o->editProduct($data2);
+        if ($res) {
+          echo "<script language='javascript'>";
+          echo "alert('¡Producto editado!');";
+          echo "window.location.replace('?b=inventario')";
+          echo "</script>";
+        }else {
+          echo "<script language='javascript'>";
+          echo "alert('Ocurrió un error');";
+          echo "window.location.replace('?b=inventario')";
+          echo "</script>";
+        }
+      }
+      else
+      {
+        $data=[
+          'id_producto'=>$_GET['prod'],
+          'nombre'=>$_GET['nom'],
+          'costo'=>$_GET['cos'],
+          'precio'=>$_GET['pre']
+        ];
+        include_once('views/layouts/head.html');
+        include_once('views/admin/header.html');
+        include_once('views/admin/edit_pro.php');
+        include_once('views/layouts/foot.html');
+      }
+
+    }else {
+      header("location:?b=index");
+    }
+  }
+
+  function surtPro(){
+  if (isset($_SESSION['admin'])) {
+    if (isset($_POST['btn_surtPro']))
+    {
+      $data2=[
+        'id_producto'=>$_POST['id_producto'],
+        'stock'=>$_POST['cantidad']+$_POST['stock']
+      ];
+      // echo "<pre>"; print_r($data2); echo "</pre>";
+
+      $res = $this->o->surtProduct($data2);
+      if ($res) {
+        echo "<script language='javascript'>";
+        echo "alert('¡Producto surtido!');";
+        echo "window.location.replace('?b=inventario')";
+        echo "</script>";
+
+      }else {
+        echo "<script language='javascript'>";
+        echo "alert('Ocurrió un error');";
+        echo "window.location.replace('?b=inventario')";
+        echo "</script>";
+      }
+    }
+    else
+    {
+      $data=[
+        'id_producto'=>$_GET['prod'],
+        'nombre'=>$_GET['nom'],
+        'stock'=>$_GET['sto']
+      ];
+      // code...
+      include_once('views/layouts/head.html');
+      include_once('views/admin/header.html');
+      include_once('views/admin/surt_pro.php');
+      include_once('views/layouts/foot.html');
+    }
+  }else {
+    header("location:?b=index");
+  }
+}
 
 
 

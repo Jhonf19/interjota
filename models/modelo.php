@@ -30,8 +30,7 @@ session_start();
     {
       try {
         // $this->peticion->query("SET NAMES 'utf8'");
-        $h = $this->peticion->prepare("INSERT INTO productos VALUES(NULL, :codigo, :nombre, :costo, :precio, :stock)");
-        $h->bindParam(':codigo', $data['codigo'], PDO::PARAM_STR);
+        $h = $this->peticion->prepare("INSERT INTO productos VALUES(NULL, :nombre, :costo, :precio, :stock)");
         $h->bindParam(':nombre', $data['nombre'], PDO::PARAM_STR);
         $h->bindParam(':costo', $data['costo'], PDO::PARAM_STR);
         $h->bindParam(':precio', $data['precio'], PDO::PARAM_STR);
@@ -52,6 +51,38 @@ session_start();
         $result = $h->fetchALL(PDO::FETCH_OBJ);
       } catch (\Exception $e) { }
       return $result;
+    }
+
+        function editProduct($data)
+    {
+      try {
+        // $this->peticion->query("SET NAMES 'utf8'");
+        $h = $this->peticion->prepare("UPDATE productos SET nombre=:nombre, costo=:costo, precio=:precio WHERE id_producto=:id_producto");
+        $h->bindParam(':id_producto', $data['id_producto'], PDO::PARAM_INT);
+        $h->bindParam(':nombre', $data['nombre'], PDO::PARAM_STR);
+        $h->bindParam(':costo', $data['costo'], PDO::PARAM_INT);
+        $h->bindParam(':precio', $data['precio'], PDO::PARAM_INT);
+        $res = $h->execute();
+
+      }catch (\Exception $e) {}
+         // echo "<pre>"; print_r($res); echo "</pre>";
+         return $res;
+
+    }
+
+        function surtProduct($data)
+    {
+      try {
+        // $this->peticion->query("SET NAMES 'utf8'");
+        $h = $this->peticion->prepare("UPDATE productos SET stock=:stock WHERE id_producto=:id_producto");
+        $h->bindParam(':id_producto', $data['id_producto'], PDO::PARAM_INT);
+        $h->bindParam(':stock', $data['stock'], PDO::PARAM_INT);
+        $res = $h->execute();
+
+      }catch (\Exception $e) {}
+         // echo "<pre>"; print_r($cantidad); echo "</pre>";
+         return $res;
+
     }
 
 
