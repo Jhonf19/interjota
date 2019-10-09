@@ -1,37 +1,26 @@
-<?php  ?>
-<!doctype html>
-<html lang="es">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<?php
+require_once('db/mysql.php');
+require_once('controllers/controlador.php');
+// echo "<pre>";
+// print_r($_SESSION);
+// echo "</pre>";
+    // instancio la clase Cliente_controlador() y nombro al objeto controlador
+$controlador = new Controlador();
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <!-- cdn icons -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
-  
-    <!-- local icons -->
-    <!-- <link rel="stylesheet" href="css/fontawesome-free-5.11.2-web/css/all.css"> -->
-    <script src="js/jquery.js"></script>
+  // verifica si existe la variable b
+  if (!empty($_REQUEST['b'])) {
+// creo una variable y la llamo metodo y le asigno el valor que venga en b
+$metodo = $_REQUEST['b'];
 
-    <title>InterJota</title>
-  </head>
-  <body>
-    <h1>Hola</h1>
-    <button id="btn" type="button" name="button">hola <i class="fas fa-check"></i> </button>
-
-
-    <!-- Optional JavaScript -->
-    <script type="text/javascript">
-    $(function () {
-      $("#btn").click(function() {
-
-        alert("hola");
-      });
-
-    });
-    </script>
-    <script src="js/bootstrap.js"></script>
-  </body>
-</html>
+//verifico si existe un metodo con el mismo nombre de la variable en la clase Controlador
+    if (method_exists($controlador, $metodo)) {
+      // si existe que lo ejecute
+      $controlador->$metodo();
+    }else {
+      // Si no existe que me ejecute el metodo por defecto
+      $controlador->index();
+    }
+  }else {
+    $controlador->index();
+  }
+ ?>
