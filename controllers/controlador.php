@@ -169,47 +169,236 @@ class Controlador
     }
   }
 
-  function surtPro(){
-  if (isset($_SESSION['admin'])) {
-    if (isset($_POST['btn_surtPro']))
-    {
-      $data2=[
-        'id_producto'=>$_POST['id_producto'],
-        'stock'=>$_POST['cantidad']+$_POST['stock']
-      ];
-      // echo "<pre>"; print_r($data2); echo "</pre>";
+    function surtPro(){
+    if (isset($_SESSION['admin'])) {
+      if (isset($_POST['btn_surtPro']))
+      {
+        $data2=[
+          'id_producto'=>$_POST['id_producto'],
+          'stock'=>$_POST['cantidad']+$_POST['stock']
+        ];
 
-      $res = $this->o->surtProduct($data2);
+        $res = $this->o->surtProduct($data2);
+        if ($res) {
+          echo "<script language='javascript'>";
+          echo "alert('¡Producto surtido!');";
+          echo "window.location.replace('?b=inventario')";
+          echo "</script>";
+
+        }else {
+          echo "<script language='javascript'>";
+          echo "alert('Ocurrió un error');";
+          echo "window.location.replace('?b=inventario')";
+          echo "</script>";
+        }
+      }
+      else
+      {
+        $data=[
+          'id_producto'=>$_GET['prod'],
+          'nombre'=>$_GET['nom'],
+          'stock'=>$_GET['sto']
+        ];
+        include_once('views/layouts/head.html');
+        include_once('views/admin/header.html');
+        include_once('views/admin/surt_pro.php');
+        include_once('views/layouts/foot.html');
+      }
+    }else {
+      header("location:?b=index");
+    }
+  }
+
+  function createFac()
+  {
+    date_default_timezone_set('America/Bogota');
+    if (isset($_SESSION['admin']))
+    {
+      // $fec = date('Y-m-d-h:i a');
+      // $fec = date('Y-m-d');
+      // echo $fec;
+
+      $data=[
+        'fecha'=>$_POST['fecha'],
+        'proveedor'=>$_POST['proveedor'],
+        'total_fac'=>$_POST['total_fac']
+      ];
+      $res = $this->o->createFac($data);
       if ($res) {
         echo "<script language='javascript'>";
-        echo "alert('¡Producto surtido!');";
-        echo "window.location.replace('?b=inventario')";
+        echo "alert('¡Factura ingresada!');";
+        echo "window.location.replace('?b=compra')";
         echo "</script>";
 
       }else {
         echo "<script language='javascript'>";
         echo "alert('Ocurrió un error');";
-        echo "window.location.replace('?b=inventario')";
+        echo "window.location.replace('?b=compra')";
         echo "</script>";
       }
     }
     else
     {
-      $data=[
-        'id_producto'=>$_GET['prod'],
-        'nombre'=>$_GET['nom'],
-        'stock'=>$_GET['sto']
-      ];
-      // code...
+      header("location:?b=index");
+    }
+  }
+
+  function venta()
+  { echo "<pre>"; print_r($_SESSION['n_venta']); echo "</pre>";
+    if (isset($_SESSION['admin']))
+    {
       include_once('views/layouts/head.html');
       include_once('views/admin/header.html');
-      include_once('views/admin/surt_pro.php');
+      include_once('views/admin/venta.php');
       include_once('views/layouts/foot.html');
     }
-  }else {
-    header("location:?b=index");
+    elseif (isset($_SESSION['operator']))
+    {
+      include_once('views/layouts/head.html');
+      include_once('views/operator/header.html');
+      include_once('views/admin/venta.php');
+      include_once('views/layouts/foot.html');
+    }
+    else
+    {
+      header("location:?b=index");
+    }
   }
-}
+
+  function addCar()
+  {
+    if (isset($_SESSION['admin']) || isset($_SESSION['operator']))
+    {
+      $id=$_POST['codigo'];
+      $cantidad=$_POST['cantidad'];
+      $res = $this->o->findPro($id);
+      if ($res)
+      {
+        $data=$res;
+
+
+        if ($cantidad > $data->stock)
+        {
+          echo '<script>
+            var cant="'.$data->stock.'"
+            var pro="'.$data->nombre.'"
+            alert("Solo hay "+cant+" "+pro+" en inventario")
+            window.location.replace("?b=venta")
+          </script>';
+        }
+        elseif ($cantidad <= 0)
+        {
+          echo '<script>
+            alert("Ingresa una cantidad mayor a cero");
+            window.location.replace("?b=venta")
+          </script>';
+        }
+        else
+        {
+          if(!isset($_SESSION['n_venta']))
+          {
+            $data->cantidad=$cantidad;
+            $data->stock=$data->stock-$cantidad;
+            $_SESSION['n_venta'][]=$data;
+            header("location:?b=venta");
+          }
+          else
+          {
+            $equal=0;
+            $super=0;
+            foreach ($_SESSION['n_venta'] as $key => $row)
+            {
+              if ($row->id_producto == $data->id_producto)
+              {
+                $equal=$equal+1;
+                $row->stock=$row->stock-$cantidad;
+                if ($row->stock <= 0)
+                {
+                  $super=1;
+                }
+
+              }
+              else
+              {
+                $row->stock=$row->stock-$cantidad;
+              }
+            }
+            // echo $super;
+            // echo "<pre>"; print_r($_SESSION['n_venta']); echo "</pre>";
+
+            if ($super > 0)
+            {
+              echo '<script>
+                alert("se agoto")
+                window.location.replace("?b=venta")
+              </script>';
+            }
+            else
+            {
+              // echo "aquii";
+              if ($equal > 0)
+              {
+                header("location:?b=venta");
+              }
+              else
+              {
+                $data->cantidad=$cantidad;
+                $_SESSION['n_venta'][]=$data;
+                header("location:?b=venta");
+              }
+            }
+
+          }
+        }
+      }
+
+    }
+    else
+    {
+      header("location:?b=index");
+    }
+  }
+
+    function removeCart(){
+    if (isset($_SESSION['admin']) || isset($_SESSION['operator'])) {
+      $id = $_GET['id'];
+      unset($_SESSION['n_venta'][$id]);
+      if (count($_SESSION['n_venta'])==0) {
+        unset($_SESSION['n_venta']);
+        header("location:?b=venta");
+      }else {
+        header("location:?b=venta");
+      }
+
+    }else {
+      header("location:?b=index");
+    }
+  }
+
+    function cancelVenta(){
+    if (isset($_SESSION['admin']) || isset($_SESSION['operator'])) {
+      unset($_SESSION['n_venta']);
+      header("location:?b=venta");
+    }else {
+      header("location:?b=index");
+    }
+  }
+
+  function reporte()
+  {
+    if (isset($_SESSION['admin']))
+    {
+      include_once('views/layouts/head.html');
+      include_once('views/admin/header.html');
+      include_once('views/admin/reporte.php');
+      include_once('views/layouts/foot.html');
+
+    }
+    else
+    {
+      header("location:?b=index");
+    }
+  }
 
 
 

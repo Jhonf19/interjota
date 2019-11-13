@@ -85,6 +85,35 @@ session_start();
 
     }
 
+      function findPro($id)
+    {
+      try {
+        $h = $this->peticion->prepare("SELECT * FROM productos WHERE id_producto=:id");
+        $h->bindParam(':id', $id, PDO::PARAM_INT);
+        $h->execute();
+        $result = $h->fetch(PDO::FETCH_OBJ);
+      } catch (\Exception $e) { }
+      return $result;
+    }
+
+
+
+        function createFac($data)
+    {
+      try {
+        // $this->peticion->query("SET NAMES 'utf8'");
+        $h = $this->peticion->prepare("INSERT INTO facturas VALUES(NULL, :fecha, :proveedor, :total_fac)");
+        $h->bindParam(':fecha', $data['fecha'], PDO::PARAM_STR);
+        $h->bindParam(':proveedor', $data['proveedor'], PDO::PARAM_STR);
+        $h->bindParam(':total_fac', $data['total_fac'], PDO::PARAM_INT);
+        $res = $h->execute();
+
+      }catch (\Exception $e) {}
+         // echo "<pre>"; print_r($res.'kk'); echo "</pre>";
+         return $res;
+
+    }
+
 
 
 
