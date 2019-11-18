@@ -304,49 +304,35 @@ class Controlador
           }
           else
           {
-            $equal=0;
-            $super=0;
-            foreach ($_SESSION['n_venta'] as $key => $row)
-            {
-              if ($row->id_producto == $data->id_producto)
-              {
-                $equal=$equal+1;
-                $row->stock=$row->stock-$cantidad;
-                if ($row->stock <= 0)
-                {
-                  $super=1;
+            foreach ($_SESSION['n_venta'] as $key => $row) {
+              if ($row->id_producto == $data->id_producto) {
+                $idq=$row->id_producto;
+                $keyq=$key;
+                
+              }
+              
+            }
+                if ($idq) {
+                  if ($cantidad > $_SESSION['n_venta'][$keyq]->stock) {
+                    echo '<script>
+                    var cant="'.$_SESSION['n_venta'][$keyq]->stock.'"
+                    var nom="'.$_SESSION['n_venta'][$keyq]->nombre.'"
+                    alert("Solo quedan "+cant+" unidades de "+nom+" en inventario")
+                    window.location.replace("?b=venta")
+                  </script>';
+                   
+                  }else {
+                    # code...
+                    $_SESSION['n_venta'][$keyq]->stock -= $cantidad;
+                    $_SESSION['n_venta'][$keyq]->cantidad += $cantidad;
+                    header("location:?b=venta");
+                  }
+                }else {
+                  $data->cantidad=$cantidad;
+              $data->stock=$data->stock-$cantidad;
+              $_SESSION['n_venta'][]=$data;
+              header("location:?b=venta");
                 }
-
-              }
-              else
-              {
-                $row->stock=$row->stock-$cantidad;
-              }
-            }
-            // echo $super;
-            // echo "<pre>"; print_r($_SESSION['n_venta']); echo "</pre>";
-
-            if ($super > 0)
-            {
-              echo '<script>
-                alert("se agoto")
-                window.location.replace("?b=venta")
-              </script>';
-            }
-            else
-            {
-              // echo "aquii";
-              if ($equal > 0)
-              {
-                header("location:?b=venta");
-              }
-              else
-              {
-                $data->cantidad=$cantidad;
-                $_SESSION['n_venta'][]=$data;
-                header("location:?b=venta");
-              }
-            }
 
           }
         }
