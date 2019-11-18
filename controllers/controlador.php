@@ -244,9 +244,15 @@ class Controlador
   }
 
   function venta()
-  { echo "<pre>"; print_r($_SESSION['n_venta']); echo "</pre>";
+  { 
     if (isset($_SESSION['admin']))
     {
+      $total_venta=0;
+      if (isset($_SESSION['n_venta'])) {
+        foreach ($_SESSION['n_venta'] as $key => $value) {
+          $total_venta += $value->precio * $value->cantidad;
+        }
+      }
       include_once('views/layouts/head.html');
       include_once('views/admin/header.html');
       include_once('views/admin/venta.php');

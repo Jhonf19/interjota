@@ -12,13 +12,20 @@
             <div class="form-group">
               <input type="text" class="form-control" name="cantidad" placeholder="Cantidad" required>
             </div>
-            <button class="btn btn-success btn-block" type="submit" name="button"><i class="fa fa-shopping-cart"></i> Añadir</button>
+            <button class="btn btn-success " type="submit" name="button"><i class="fa fa-shopping-cart"></i> Añadir</button>
           </form>
-          <a class="btn btn-secondary" href="?b=cancelVenta">Cancelar</a>
+          <div class="card-footer">
+
+            <a class="btn btn-primary btn-block" href="?b=">Vender</a>
+            <a class="btn btn-secondary btn-block" href="?b=cancelVenta">Cancelar</a>
+          </div>
         </div>
       </div>
     </div>
     <div class="col-md-6">
+      <div class="card">
+        <div class="card-header text-right"><h3><b>Total:</b> <?php echo number_format($total_venta) ?></h3></div>
+      </div>
       <div class="card">
         <div class="card-body">
           <h3 class="card-title text-center">Lista de articulos</h3><hr>
