@@ -16,7 +16,8 @@
           </form>
           <div class="card-footer">
 
-            <a class="btn btn-primary btn-block" href="?b=">Vender</a>
+            <a class="btn btn-primary btn-block" href="?b=sell&sell=<?php echo $total_venta; ?>&date=<?php
+            echo date('Y-m-d'); ?>">Vender</a>
             <a class="btn btn-secondary btn-block" href="?b=cancelVenta">Cancelar</a>
           </div>
         </div>

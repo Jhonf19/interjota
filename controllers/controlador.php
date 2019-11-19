@@ -376,6 +376,45 @@ class Controlador
     }
   }
 
+  function sell(){
+    if (isset($_SESSION['admin'])) {
+      if (isset($_SESSION['n_venta'])) {
+        foreach ($_SESSION['n_venta'] as $key => $row) {
+          $data[]=$row;
+        }
+        $data2 = [
+          'fecha_ven'=>$_GET['date'],
+          'total_ven'=>$_GET['sell']
+        ];
+        // echo "<pre>";
+        // print_r($data);
+        // print_r($data2);
+        // echo "</pre>";
+
+        $res = $this->o->sellProducts($data, $data2);
+        if ($res) {
+          unset($_SESSION['n_venta']);
+          echo "<script language='javascript'>";
+          echo "alert('¡Venta realizada!');";
+          echo "window.location.replace('?b=venta')";
+          echo "</script>";
+        }else {
+          echo "<script language='javascript'>";
+          echo "alert('Ocurrió un error');";
+          echo "window.location.replace('?b=venta')";
+          echo "</script>";
+        }
+        
+      }else {
+      header("location:?b=venPro");
+      }
+
+
+    }else {
+      header("location:?b=index");
+    }
+  }
+
   function reporte()
   {
     if (isset($_SESSION['admin']))
