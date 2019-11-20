@@ -4,7 +4,7 @@
     <div class="col-md-6">
       <div class="card">
         <div class="card-body">
-          <h3 class="card-title text-center">Generar Reporte Mensual</h3>
+          <h3 class="card-title text-center">Reporte Mensual</h3>
           <form action="?b=generateReport" method="post" id="fnb">
             <div class="form-group">
               <select class="form-control" form="fnb" name="mes">
@@ -32,13 +32,10 @@
     <div class="col-md-6">
       <div class="card">
         <div class="card-body">
-          <h3 class="card-title text-center">Generar Reporte de Ventas</h3>
-          <form action="?b=createPerf" method="post" id="">
+          <h3 class="card-title text-center">Reporte Diario</h3>
+          <form action="?b=generateReport" method="post" id="">
             <div class="form-group">
-              <select class="form-control" form="" name="rol">
-                <option selected>Seleccione el día</option>
-                <option value="0">Dias</option>
-              </select>
+              <input type="text" class="form-control" value="<?php echo date('Y-m-d') ?>" readonly name="dia">
             </div>
             <button class="btn btn-primary btn-block" type="submit">Generar</button>
             <!-- <a class="btn btn-block btn-secondary" type="button" href="?b=listAcounts">Cancelar</a> -->

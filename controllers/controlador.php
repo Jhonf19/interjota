@@ -434,19 +434,51 @@ class Controlador
   function generateReport()
   {
     if (isset($_SESSION['admin'])) {
-      $mes = $_POST['mes'];
-      $res = $this->o->generateReport($mes);
+      
+      if (isset($_POST['mes'])) {
+        
+        $mes = $_POST['mes'];
 
-      if ($res) {
-        $this->viewReport($res);
-      } else {
-        echo '<script>
-                    var cant="'.$mes.'"
-                    alert("No se hayaron ventas en el mes "+cant)
-                    window.location.replace("?b=reporte")
-              </script>
-            ';
+        $data = [
+          "mes"=>$mes,
+          "val"=>"mes"
+        ];
+        
+        $res = $this->o->generateReport($data);
+
+        if ($res) {
+          $this->viewReport($res);
+        } else {
+          echo '<script>
+                      var cant="'.$mes.'"
+                      alert("No se hayaron ventas en el mes "+cant)
+                      window.location.replace("?b=reporte")
+                </script>
+              ';
+        }
+      } else if(isset($_POST['dia'])) {
+        $dia = $_POST['dia'];
+        $data = [
+          "dia"=>$dia,
+          "val"=>"dia"
+          
+        ];
+        
+        $res = $this->o->generateReport($data);
+
+        if ($res) {
+          $this->viewReport($res);
+        } else {
+          echo '<script>
+                      var cant="'.$dia.'"
+                      alert("No se hayaron ventas en el día "+cant)
+                      window.location.replace("?b=reporte")
+                </script>
+              ';
+        }
       }
+      
+
       
     }else {
       header("location:?b=index");

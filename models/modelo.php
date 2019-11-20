@@ -134,8 +134,11 @@ session_start();
   
     }
 
-    function generateReport($mes){
-      $mes = "%-".$mes."-%";
+    function generateReport($data){
+      // echo "<pre>" ; print_r($data); echo "</pre>";
+
+      if ($data['val'] == 'mes') {
+        $mes = "%-".$data['mes']."-%";
       try {
         $h = $this->peticion->prepare("SELECT * FROM ventas WHERE fecha_ven LIKE :mes ");
         $h->bindParam(':mes', $mes, PDO::PARAM_STR);
@@ -145,6 +148,21 @@ session_start();
 
       } catch (\Exception $e) {}
       return $result;
+      } else if($data['val'] == 'dia') {
+        $dia = $data['dia'];
+
+        try {
+          $h = $this->peticion->prepare("SELECT * FROM ventas WHERE fecha_ven = :dia ");
+          $h->bindParam(':dia', $dia, PDO::PARAM_STR);
+          $res = $h->execute();
+  
+          $result = $h->fetchAll(PDO::FETCH_OBJ);
+  
+        } catch (\Exception $e) {}
+        return $result;
+
+      }
+      
 
     }
 
