@@ -476,6 +476,25 @@ class Controlador
                 </script>
               ';
         }
+      }else if(isset($_POST['balance'])) {
+        $mes = $_POST['balance'];
+
+        $data = [
+          "mes"=>$mes,
+          "val"=>"balance"
+        ];
+        $res = $this->o->generateReport($data);
+
+        if (!empty($res)) {
+          $this->balance($res);
+        } else {
+          echo '<script>
+                      var cant="'.$mes.'"
+                      alert("No se hayaron ventas en el mes "+cant)
+                      window.location.replace("?b=reporte")
+                </script>
+              ';
+        }
       }
       
 
@@ -490,6 +509,23 @@ class Controlador
       include_once("views/layouts/head.html");
       include_once("views/admin/header.html");
       include_once("views/admin/viewReport.php");
+      include_once("views/layouts/foot.html");
+    }else {
+      header("location:?b=index");
+    }
+  }
+
+  function balance($bal){
+    if (isset($_SESSION['admin'])) {
+      $compras = $bal['compras'];
+      $ventas  = (int)$bal['ventas'];
+      $balance = $ventas - $compras;
+      
+      
+      
+      include_once("views/layouts/head.html");
+      include_once("views/admin/header.html");
+      include_once("views/admin/viewBal.php");
       include_once("views/layouts/foot.html");
     }else {
       header("location:?b=index");

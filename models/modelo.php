@@ -135,31 +135,54 @@ session_start();
     }
 
     function generateReport($data){
-      // echo "<pre>" ; print_r($data); echo "</pre>";
-
+      
       if ($data['val'] == 'mes') {
         $mes = "%-".$data['mes']."-%";
-      try {
-        $h = $this->peticion->prepare("SELECT * FROM ventas WHERE fecha_ven LIKE :mes ");
-        $h->bindParam(':mes', $mes, PDO::PARAM_STR);
-        $res = $h->execute();
-
-        $result = $h->fetchAll(PDO::FETCH_OBJ);
-
-      } catch (\Exception $e) {}
-      return $result;
+        try {
+          $h = $this->peticion->prepare("SELECT * FROM ventas WHERE fecha_ven LIKE :mes ");
+          $h->bindParam(':mes', $mes, PDO::PARAM_STR);
+          $res = $h->execute();
+          
+          $result = $h->fetchAll(PDO::FETCH_OBJ);
+          
+        } catch (\Exception $e) {}
+        return $result;
       } else if($data['val'] == 'dia') {
         $dia = $data['dia'];
-
+        
         try {
           $h = $this->peticion->prepare("SELECT * FROM ventas WHERE fecha_ven = :dia ");
           $h->bindParam(':dia', $dia, PDO::PARAM_STR);
           $res = $h->execute();
-  
+          
           $result = $h->fetchAll(PDO::FETCH_OBJ);
-  
+          
         } catch (\Exception $e) {}
         return $result;
+        
+      }elseif ($data['val'] == 'balance') {
+        
+        $mes = "%-".$data['mes']."-%";
+        try {
+          $h = $this->peticion->prepare("SELECT SUM(total_fac) AS compras  FROM facturas WHERE fecha_fac LIKE :mes ");
+          $h->bindParam(':mes', $mes, PDO::PARAM_STR);
+          $res = $h->execute();
+          
+          $result = $h->fetch(PDO::FETCH_OBJ);
+
+          $i = $this->peticion->prepare("SELECT SUM(total_ven) AS ventas  FROM ventas WHERE fecha_ven LIKE :mes ");
+          $i->bindParam(':mes', $mes, PDO::PARAM_STR);
+          $res2 = $i->execute();
+          
+          $result2 = $i->fetch(PDO::FETCH_OBJ);
+          
+        } catch (\Exception $e) {}
+        $dat = [
+          "compras"=>$result->compras,
+          "ventas"=>$result2->ventas
+        ];
+        return $dat;
+        // echo "<pre>" ; print_r($dat); echo "</pre>";
 
       }
       
