@@ -431,6 +431,39 @@ class Controlador
     }
   }
 
+  function generateReport()
+  {
+    if (isset($_SESSION['admin'])) {
+      $mes = $_POST['mes'];
+      $res = $this->o->generateReport($mes);
+
+      if ($res) {
+        $this->viewReport($res);
+      } else {
+        echo '<script>
+                    var cant="'.$mes.'"
+                    alert("No se hayaron ventas en el mes "+cant)
+                    window.location.replace("?b=reporte")
+              </script>
+            ';
+      }
+      
+    }else {
+      header("location:?b=index");
+    }
+  }
+  
+  function viewReport($rep){
+    if (isset($_SESSION['admin'])) {
+      include_once("views/layouts/head.html");
+      include_once("views/admin/header.html");
+      include_once("views/admin/viewReport.php");
+      include_once("views/layouts/foot.html");
+    }else {
+      header("location:?b=index");
+    }
+  }
+
 
 
   function exit() {

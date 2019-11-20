@@ -134,6 +134,20 @@ session_start();
   
     }
 
+    function generateReport($mes){
+      $mes = "%-".$mes."-%";
+      try {
+        $h = $this->peticion->prepare("SELECT * FROM ventas WHERE fecha_ven LIKE :mes ");
+        $h->bindParam(':mes', $mes, PDO::PARAM_STR);
+        $res = $h->execute();
+
+        $result = $h->fetchAll(PDO::FETCH_OBJ);
+
+      } catch (\Exception $e) {}
+      return $result;
+
+    }
+
 
 
 
