@@ -7,20 +7,20 @@
           <thead>
               <th>#</th>
               <th>Fecha</th>
-              <th>Total</th>
+              <th>Subtotal</th>
           </thead>
           <tbody>
               <?php $tot=0; foreach ($rep as $key => $row) : ?>
               <tr>
                 <td><?php $tot += $row->total_ven; echo $key+1; ?></td>
                 <td><?php echo $row->fecha_ven; ?></td>
-                <td><?php echo $row->total_ven; ?></td>
+                <td><?php echo number_format($row->total_ven); ?></td>
               </tr>
               <?php endforeach; ?>
               <tr>
-                <td></td>
-                <td></td>
-              <td><b>TOTAL:</b> <?php echo number_format($tot); ?></td>
+                <td class="borderless"></td>
+                <td class="text-right"><b>TOTAL:</b></td>
+              <td><b><?php echo number_format($tot); ?></b></td>
               </tr>
           </tbody>
         </table>

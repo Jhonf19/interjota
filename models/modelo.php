@@ -137,7 +137,8 @@ session_start();
     function generateReport($data){
       
       if ($data['val'] == 'mes') {
-        $mes = "%-".$data['mes']."-%";
+        date_default_timezone_set('America/Bogota');
+        $mes = date('Y')."%-".$data['mes']."-%";
         try {
           $h = $this->peticion->prepare("SELECT * FROM ventas WHERE fecha_ven LIKE :mes ");
           $h->bindParam(':mes', $mes, PDO::PARAM_STR);
@@ -161,8 +162,8 @@ session_start();
         return $result;
         
       }elseif ($data['val'] == 'balance') {
-        
-        $mes = "%-".$data['mes']."-%";
+        date_default_timezone_set('America/Bogota');
+        $mes = date('Y')."%-".$data['mes']."-%";
         try {
           $h = $this->peticion->prepare("SELECT SUM(total_fac) AS compras  FROM facturas WHERE fecha_fac LIKE :mes ");
           $h->bindParam(':mes', $mes, PDO::PARAM_STR);
@@ -189,7 +190,68 @@ session_start();
 
     }
 
+    function sumProducts(){
 
+      try {
+        $h = $this->peticion->prepare("SELECT COUNT(id_producto) AS suma FROM productos");
+        $h->execute();
+
+        $result = $h->fetch(PDO::FETCH_OBJ);
+      } catch (\Exception $e) {}
+        return $result;
+    }
+
+    function sellsToday(){
+      date_default_timezone_set('America/Bogota');
+      $mes = date('Y-m-d');
+      try {
+        $h = $this->peticion->prepare("SELECT SUM(total_ven) AS total_v FROM ventas WHERE fecha_ven = :mes");
+        $h->bindParam(':mes', $mes, PDO::PARAM_STR);
+        $h->execute();
+
+        $result = $h->fetch(PDO::FETCH_OBJ);
+      } catch (\Exception $e) {}
+        return $result;
+    }
+
+    function sellsMonth(){
+      date_default_timezone_set('America/Bogota');
+      $mes = "%".date('Y-m-')."%";
+      try {
+        $h = $this->peticion->prepare("SELECT SUM(total_ven) AS total_vm FROM ventas WHERE fecha_ven LIKE :mes");
+        $h->bindParam(':mes', $mes, PDO::PARAM_STR);
+        $h->execute();
+
+        $result = $h->fetch(PDO::FETCH_OBJ);
+      } catch (\Exception $e) {}
+        return $result;
+    }
+
+    function buysMonth(){
+      date_default_timezone_set('America/Bogota');
+      $mes = "%".date('Y-m-')."%";
+      try {
+        $h = $this->peticion->prepare("SELECT SUM(total_fac) AS total_cm FROM facturas WHERE fecha_fac LIKE :mes");
+        $h->bindParam(':mes', $mes, PDO::PARAM_STR);
+        $h->execute();
+
+        $result = $h->fetch(PDO::FETCH_OBJ);
+      } catch (\Exception $e) {}
+        return $result;
+    }
+
+    function buysToday() {
+      date_default_timezone_set('America/Bogota');
+      $dia = date('Y-m-d');
+      try {
+        $h = $this->peticion->prepare("SELECT SUM(total_fac) AS total_c FROM facturas WHERE fecha_fac = :dia");
+        $h->bindParam(':dia', $dia, PDO::PARAM_STR);
+        $h->execute();
+
+        $result = $h->fetch(PDO::FETCH_OBJ);
+      } catch (\Exception $e) {}
+        return $result;
+    }
 
 
 

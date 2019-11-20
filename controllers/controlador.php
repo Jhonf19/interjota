@@ -51,8 +51,17 @@ class Controlador
   function panel()
   {
     if (isset($_SESSION['admin'])) {
+      date_default_timezone_set('America/Bogota');
+      $data = date('Y-m-d');
+      $productos = $this->o->sumProducts();
+      $v_hoy = $this->o->sellsToday();
+      $v_mes = $this->o->sellsMonth();
+      $c_mes = $this->o->buysMonth();
+      $c_hoy = $this->o->buysToday();
+      $b_mes = $v_mes->total_vm - $c_mes->total_cm;
       include_once('views/layouts/head.html');
       include_once('views/admin/header.html');
+      include_once('views/admin/panel.php');
       include_once('views/layouts/foot.html');
     }
     elseif (isset($_SESSION['operator'])) {
@@ -247,6 +256,7 @@ class Controlador
   { 
     if (isset($_SESSION['admin']))
     {
+      date_default_timezone_set('America/Bogota');
       $total_venta=0;
       if (isset($_SESSION['n_venta'])) {
         foreach ($_SESSION['n_venta'] as $key => $value) {
@@ -419,6 +429,7 @@ class Controlador
   {
     if (isset($_SESSION['admin']))
     {
+      date_default_timezone_set('America/Bogota');
       include_once('views/layouts/head.html');
       include_once('views/admin/header.html');
       include_once('views/admin/reporte.php');
