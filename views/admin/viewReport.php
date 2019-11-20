@@ -3,7 +3,6 @@
 <?php if(isset($rep)) : ?>
   <div class="row">
     <div class="col-md-12">
-      <div class="card">
         <table class="table table-bordered">
           <thead>
               <th>#</th>
@@ -19,13 +18,12 @@
               </tr>
               <?php endforeach; ?>
               <tr>
-                <td> 22</td>
-                <td>3 </td>
-              <td>TOTAL: <?php echo number_format($tot); ?></td>
+                <td></td>
+                <td></td>
+              <td><b>TOTAL:</b> <?php echo number_format($tot); ?></td>
               </tr>
           </tbody>
         </table>
-      </div>
     </div>
     </div>
            
