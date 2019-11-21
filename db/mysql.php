@@ -3,7 +3,7 @@
 class MySQL{
   private static $dsn='mysql:host=localhost;dbname=interjotadb';
   private static $user="root";
-  private static $password="";
+  private static $password="jhonf";
   private static $con = null;
 
   public function __construct() {

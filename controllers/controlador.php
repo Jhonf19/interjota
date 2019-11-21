@@ -36,7 +36,7 @@ class Controlador
       }
       else if ($res[0]->rol == 2) {
         $_SESSION['operator']=$res;
-        header("location:?b=panel");
+        header("location:?b=venta");
       }
 
     }else {
@@ -509,12 +509,12 @@ class Controlador
         ];
         $res = $this->o->generateReport($data);
 
-        if (!empty($res)) {
+        if (!empty($res['compras'] && !empty($res['ventas']))) {
           $this->balance($res);
         } else {
           echo '<script>
                       var cant="'.$mes.'"
-                      alert("No se hayaron ventas en el mes "+cant)
+                      alert("No se hayaron compras ni ventas en el mes "+cant)
                       window.location.replace("?b=reporte")
                 </script>
               ';

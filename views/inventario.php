@@ -4,9 +4,9 @@
     <div class="table-responsive">
       <h3 class="text-center">Productos</h3>
       <br>
-      <table class="table table-bordered text-center">
-        <thead>
-          <th>CODIGO</th><th>NOMBRE</th>
+      <table class="table table-bordered table-striped text-center">
+        <thead class="bg-primary text-light">
+          <th style="width:5px;">CODIGO</th><th>NOMBRE</th>
           <?php if (isset($_SESSION['admin'])): ?>
           <th>COSTO</th>
           <?php endif; ?>

@@ -7,8 +7,8 @@
           <h3 class="card-title text-center">Reporte Mensual</h3>
           <form action="?b=generateReport" method="post" id="fnb">
             <div class="form-group">
-              <select class="form-control" form="fnb" name="mes">
-                <option selected>Seleccione el mes</option>
+              <select class="form-control" form="fnb" name="mes" required>
+                <option value="" selected>Seleccione el mes</option>
                 <option value="01">Enero</option>
                 <option value="02">Febrero</option>
                 <option value="03">Marzo</option>
@@ -24,7 +24,6 @@
               </select>
             </div>
             <button class="btn btn-primary btn-block" type="submit">Generar</button>
-            <!-- <a class="btn btn-block btn-secondary" type="button" href="?b=listAcounts">Cancelar</a> -->
           </form>
         </div>
       </div>
@@ -35,10 +34,9 @@
           <h3 class="card-title text-center">Reporte Diario</h3>
           <form action="?b=generateReport" method="post" id="">
             <div class="form-group">
-              <input type="text" class="form-control" value="<?php echo date('Y-m-d') ?>" readonly name="dia">
+              <input class="form-control" type="date" name="dia" required>
             </div>
             <button class="btn btn-primary btn-block" type="submit">Generar</button>
-            <!-- <a class="btn btn-block btn-secondary" type="button" href="?b=listAcounts">Cancelar</a> -->
           </form>
         </div>
       </div>
@@ -50,8 +48,8 @@
         <h3 class="card-title text-center">Reporte Financiero</h3>
         <form action="?b=generateReport" method="post">
         <div class="form-group">
-              <select class="form-control" name="balance">
-                <option selected>Seleccione el mes</option>
+              <select class="form-control" name="balance" required>
+                <option value="" selected>Seleccione el mes</option>
                 <option value="01">Enero</option>
                 <option value="02">Febrero</option>
                 <option value="03">Marzo</option>

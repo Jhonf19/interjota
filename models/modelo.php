@@ -183,7 +183,6 @@ session_start();
           "ventas"=>$result2->ventas
         ];
         return $dat;
-        // echo "<pre>" ; print_r($dat); echo "</pre>";
 
       }
       

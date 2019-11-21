@@ -31,9 +31,10 @@
       <div class="card">
         <div class="card-body">
           <h3 class="card-title text-center">Lista de articulos</h3><hr>
+          <div class="table-responsive">
           <table class="table table-bordered ">
             <thead>
-              <th>CODIGO</th>
+              <th style="width:5px;">CODIGO</th>
               <th>NOMBRE</th>
               <th>PRECIO</th>
               <th>CANTIDAD</th>
@@ -53,6 +54,7 @@
           <?php endif; ?>
             </tbody>
           </table>
+          </div>
         </div>
       </div>
     </div>
