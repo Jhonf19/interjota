@@ -59,6 +59,12 @@ class Controlador
       $c_mes = $this->o->buysMonth();
       $c_hoy = $this->o->buysToday();
       $b_mes = $v_mes->total_vm - $c_mes->total_cm;
+      if ($b_mes < 0) {
+        $color = "bg-danger";
+      } else {
+        $color = "bg-success";
+      }
+      
       include_once('views/layouts/head.html');
       include_once('views/admin/header.html');
       include_once('views/admin/panel.php');
@@ -270,6 +276,13 @@ class Controlador
     }
     elseif (isset($_SESSION['operator']))
     {
+      date_default_timezone_set('America/Bogota');
+      $total_venta=0;
+      if (isset($_SESSION['n_venta'])) {
+        foreach ($_SESSION['n_venta'] as $key => $value) {
+          $total_venta += $value->precio * $value->cantidad;
+        }
+      }
       include_once('views/layouts/head.html');
       include_once('views/operator/header.html');
       include_once('views/admin/venta.php');
@@ -387,7 +400,7 @@ class Controlador
   }
 
   function sell(){
-    if (isset($_SESSION['admin'])) {
+    if (isset($_SESSION['admin']) || isset($_SESSION['operator'])) {
       if (isset($_SESSION['n_venta'])) {
         foreach ($_SESSION['n_venta'] as $key => $row) {
           $data[]=$row;

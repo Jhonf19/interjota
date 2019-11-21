@@ -12,8 +12,9 @@
             <div class="form-group">
               <input type="text" class="form-control" name="cantidad" placeholder="Cantidad" required>
             </div>
-            <button class="btn btn-success " type="submit" name="button"><i class="fa fa-shopping-cart"></i> Añadir</button>
+            <button class="btn btn-success " type="submit" name="button"><i class="fas fa-cart-plus"></i> Añadir</button>
           </form>
+          <br>
           <div class="card-footer">
 
             <a class="btn btn-primary btn-block" href="?b=sell&sell=<?php echo $total_venta; ?>&date=<?php
