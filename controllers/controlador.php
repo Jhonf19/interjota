@@ -271,7 +271,7 @@ class Controlador
       }
       include_once('views/layouts/head.html');
       include_once('views/admin/header.html');
-      include_once('views/admin/venta.php');
+      include_once('views/venta.php');
       include_once('views/layouts/foot.html');
     }
     elseif (isset($_SESSION['operator']))
@@ -285,7 +285,7 @@ class Controlador
       }
       include_once('views/layouts/head.html');
       include_once('views/operator/header.html');
-      include_once('views/admin/venta.php');
+      include_once('views/venta.php');
       include_once('views/layouts/foot.html');
     }
     else
@@ -365,6 +365,13 @@ class Controlador
 
           }
         }
+      }else {
+        echo '<script>
+        var cant="'.$id.'"
+        alert("El codigo de producto "+cant+" no existe")
+        window.location.replace("?b=venta")
+  </script>
+';
       }
 
     }

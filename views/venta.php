@@ -46,7 +46,7 @@
                 <tr>
                   <td><?php echo $row->id_producto; ?></td>
                   <td><?php echo $row->nombre; ?></td>
-                  <td><?php echo "$".$row->precio; ?></td>
+                  <td><?php echo "$".number_format($row->precio); ?></td>
                   <td><?php echo $row->cantidad; ?></td>
                   <td><a class="btn btn-danger" href="?b=removeCart&id=<?php echo $key; ?>"><i class="fas fa-times"></i></a></td>
                 </tr>

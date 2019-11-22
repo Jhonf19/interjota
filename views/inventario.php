@@ -22,9 +22,9 @@
             <td><?php echo $row->id_producto; ?></td>
             <td><?php echo $row->nombre; ?></td>
             <?php if (isset($_SESSION['admin'])): ?>
-              <td><?php echo "$".$row->costo; ?></td>
+              <td><?php echo "$".number_format($row->costo); ?></td>
             <?php endif; ?>
-            <td><?php echo "$".$row->precio; ?></td>
+            <td><?php echo "$".number_format($row->precio); ?></td>
             <td><?php echo $row->stock; ?></td>
             <?php if (isset($_SESSION['admin'])): ?>
               <td>
