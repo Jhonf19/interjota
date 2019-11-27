@@ -138,7 +138,7 @@ session_start();
       
       if ($data['val'] == 'mes') {
         date_default_timezone_set('America/Bogota');
-        $mes = date('Y')."%-".$data['mes']."-%";
+        $mes = "%".$data['mes']."%";
         try {
           $h = $this->peticion->prepare("SELECT * FROM ventas WHERE fecha_ven LIKE :mes ");
           $h->bindParam(':mes', $mes, PDO::PARAM_STR);
@@ -163,7 +163,7 @@ session_start();
         
       }elseif ($data['val'] == 'balance') {
         date_default_timezone_set('America/Bogota');
-        $mes = date('Y')."%-".$data['mes']."-%";
+        $mes = "%".$data['mes']."%";
         try {
           $h = $this->peticion->prepare("SELECT SUM(total_fac) AS compras  FROM facturas WHERE fecha_fac LIKE :mes ");
           $h->bindParam(':mes', $mes, PDO::PARAM_STR);
