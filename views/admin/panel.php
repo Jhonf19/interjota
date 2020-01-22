@@ -65,5 +65,38 @@
       </div>
     </div>
   </div>
+  <br>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card bg-secondary text-dark">
+        <div class="card-header">UTILIDAD DE VENTAS</div>
+        <div class="card-body">
+          <div class="row">
+          <div class="col-md-6">
+          <div class="card bg-secondary text-dark">
+            <div class="card-header">VENTAS MES</div>
+            <div class="card-body">
+              <h3>
+              <?php echo number_format($u_mes->total_ut); ?>
+              </h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card bg-secondary text-dark">
+            <div class="card-header">VENTAS HOY</div>
+            <div class="card-body">
+              <h3>
+              <?php echo number_format($u_hoy->total_ut_today); ?>
+              </h3>
+            </div>
+          </div>
+        </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 

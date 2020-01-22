@@ -120,9 +120,10 @@ session_start();
       }
       if ($res){
          try {
-        $h = $this->peticion->prepare("INSERT INTO ventas VALUES (NULL, :fecha , :total)");
+        $h = $this->peticion->prepare("INSERT INTO ventas VALUES (NULL, :fecha , :total, :utilidad)");
         $h->bindParam(':fecha', $data2['fecha_ven'], PDO::PARAM_STR);
         $h->bindParam(':total', $data2['total_ven'], PDO::PARAM_INT);
+        $h->bindParam(':utilidad', $data2['utilidad'], PDO::PARAM_INT);
         $res2 = $h->execute();
       
 
@@ -244,6 +245,32 @@ session_start();
       $dia = date('Y-m-d');
       try {
         $h = $this->peticion->prepare("SELECT SUM(total_fac) AS total_c FROM facturas WHERE fecha_fac = :dia");
+        $h->bindParam(':dia', $dia, PDO::PARAM_STR);
+        $h->execute();
+
+        $result = $h->fetch(PDO::FETCH_OBJ);
+      } catch (\Exception $e) {}
+        return $result;
+    }
+
+    function utilityMonth() {
+      date_default_timezone_set('America/Bogota');
+      $mes = "%".date('Y-m-')."%";
+      try {
+        $h = $this->peticion->prepare("SELECT SUM(utilidad) AS total_ut FROM ventas WHERE fecha_ven LIKE :mes");
+        $h->bindParam(':mes', $mes, PDO::PARAM_STR);
+        $h->execute();
+
+        $result = $h->fetch(PDO::FETCH_OBJ);
+      } catch (\Exception $e) {}
+        return $result;
+    }
+
+    function utilityToday() {
+      date_default_timezone_set('America/Bogota');
+      $dia = date('Y-m-d');
+      try {
+        $h = $this->peticion->prepare("SELECT SUM(utilidad) AS total_ut_today FROM ventas WHERE fecha_ven = :dia");
         $h->bindParam(':dia', $dia, PDO::PARAM_STR);
         $h->execute();
 

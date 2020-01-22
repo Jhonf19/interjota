@@ -59,6 +59,8 @@ class Controlador
       $c_mes = $this->o->buysMonth();
       $c_hoy = $this->o->buysToday();
       $b_mes = $v_mes->total_vm - $c_mes->total_cm;
+      $u_mes = $this->o->utilityMonth();
+      $u_hoy = $this->o->utilityToday();
       if ($b_mes < 0) {
         $color = "bg-danger";
       } else {
@@ -264,9 +266,11 @@ class Controlador
     {
       date_default_timezone_set('America/Bogota');
       $total_venta=0;
+      $utilidad_venta=0;
       if (isset($_SESSION['n_venta'])) {
         foreach ($_SESSION['n_venta'] as $key => $value) {
           $total_venta += $value->precio * $value->cantidad;
+          $utilidad_venta += $value->utility * $value->cantidad;
         }
       }
       include_once('views/layouts/head.html');
@@ -297,7 +301,7 @@ class Controlador
   function addCar()
   {
     if (isset($_SESSION['admin']) || isset($_SESSION['operator']))
-    {
+    {//al traer el producto puedo calcular su utilidad
       $id=$_POST['codigo'];
       $cantidad=$_POST['cantidad'];
       $res = $this->o->findPro($id);
@@ -328,6 +332,7 @@ class Controlador
           {
             $data->cantidad=$cantidad;
             $data->stock=$data->stock-$cantidad;
+            $data->utility=($data->precio-$data->costo);
             $_SESSION['n_venta'][]=$data;
             header("location:?b=venta");
           }
@@ -354,11 +359,13 @@ class Controlador
                     # code...
                     $_SESSION['n_venta'][$keyq]->stock -= $cantidad;
                     $_SESSION['n_venta'][$keyq]->cantidad += $cantidad;
+                    // $_SESSION['n_venta'][$keyq]->utility += $_SESSION['n_venta'][$keyq]->cantidad;
                     header("location:?b=venta");
                   }
                 }else {
                   $data->cantidad=$cantidad;
               $data->stock=$data->stock-$cantidad;
+              $data->utility=($data->precio-$data->costo);
               $_SESSION['n_venta'][]=$data;
               header("location:?b=venta");
                 }
@@ -409,12 +416,15 @@ class Controlador
   function sell(){
     if (isset($_SESSION['admin']) || isset($_SESSION['operator'])) {
       if (isset($_SESSION['n_venta'])) {
+        $x=0;
         foreach ($_SESSION['n_venta'] as $key => $row) {
           $data[]=$row;
+          $x += $row->utility * $row->cantidad;
         }
         $data2 = [
           'fecha_ven'=>$_GET['date'],
-          'total_ven'=>$_GET['sell']
+          'total_ven'=>$_GET['sell'],
+          'utilidad'=>$x
         ];
         // echo "<pre>";
         // print_r($data);

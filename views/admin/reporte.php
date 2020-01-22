@@ -7,7 +7,7 @@
           <h3 class="card-title text-center">Reporte de ventas Mensual</h3>
           <form action="?b=generateReport" method="post" id="fnb">
             <div class="form-group">
-              <input class="form-control" type="month" name="mes" required>
+              <input class="form-control" type="month" name="mes" placeholder="aaaa-mm" required>
             </div>
             <button class="btn btn-primary btn-block" type="submit">Generar</button>
           </form>
@@ -34,7 +34,7 @@
         <h3 class="card-title text-center">Reporte Financiero Mensual</h3>
         <form action="?b=generateReport" method="post">
             <div class="form-group">
-              <input class="form-control" type="month" name="balance" required>
+              <input class="form-control" type="month" name="balance" placeholder="aaaa-mm" required>
             </div>
           <button class="btn btn-primary btn-block" type="submit">Generar</button>
         </form>
