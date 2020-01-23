@@ -134,7 +134,14 @@ class Controlador
        elseif (isset($_SESSION['operator'])) {
          include_once('views/operator/header.html');
        }
-       $res = $this->o->listProducts();
+       $ini = ($_GET['pagina']-1)*2;
+       $fin = 2 * $ini;
+       $res = $this->o->listProducts($ini, $fin);
+       $res2 = $this->o->countProducts();
+       $rows = $res2[0]->cant;
+       $pages = ceil($rows/2);
+       "<pre>";print_r($res2[0]->cant);echo "</pre>";
+       echo $_GET['pagina'];
        include_once('views/inventario.php');
        include_once('views/layouts/foot.html');
 

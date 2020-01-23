@@ -40,6 +40,66 @@
         <?php endforeach; ?>
         </tbody>
       </table>
+      <div class="d-flex justify-content-around">
+        <nav class="" aria-label="Page navigation example">
+          <ul class="pagination">
+            <li class="page-item <?php echo $_GET['pagina']<=1 ? 'disabled' : '' ?>">
+              <?php
+
+                if (isset($_GET['pagina']))
+                {
+
+                  $a=$_GET['pagina'] - 1;
+                  if($a < 1)
+                  {
+                    $href = "?b=inventario";
+                  }
+                  else
+                  {
+                    $href = "?b=inventario&pagina=".$a;
+                  }
+                }else{
+                  $href = "?b=inventario";
+                }
+              ?>
+              <a class="page-link" href="<?php  echo $href ?>" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+              </a>
+            </li>
+              <?php for ($i=0; $i < $pages; $i++): ?>
+                <li class="page-item
+                <?php echo $_GET['pagina']==$i+1 ? 'active' : '' ?>">
+                <a class="page-link" href="?b=inventario&pagina=<?php echo $i+1 ?>"><?php echo $i+1 ?></a></li>
+              <?php endfor; ?>
+            <li class="page-item <?php echo $_GET['pagina']>=$pages ? 'disabled' : '' ?>">
+            <?php
+
+                if (isset($_GET['pagina']))
+                {
+
+                  $next=$_GET['pagina'] + 1;
+                  if($next > $pages)
+                  {
+                    $next2 = $next - 1;
+                    $href2 = "?b=inventario&pagina=".$next2;
+                  }
+                  else
+                  {
+                    $href2 = "?b=inventario&pagina=".$next;
+                  }
+                }else{
+                  $href2 = "?b=inventario";
+                }
+              ?>
+              <a class="page-link" href="<?php  echo $href2 ?>" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
   </div>
 </div>

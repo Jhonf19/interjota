@@ -41,10 +41,20 @@ session_start();
 
     }
 
-      function listProducts()
+      function listProducts($ini, $fin)
     {
       try {
-        $h = $this->peticion->prepare("SELECT * FROM productos");
+        $h = $this->peticion->prepare("SELECT * FROM productos LIMIT $ini, 2");
+        $h->execute();
+        $result = $h->fetchALL(PDO::FETCH_OBJ);
+      } catch (\Exception $e) { }
+      return $result;
+    }
+
+      function countProducts()
+    {
+      try {
+        $h = $this->peticion->prepare("SELECT COUNT(id_producto) AS cant FROM productos");
         $h->execute();
         $result = $h->fetchALL(PDO::FETCH_OBJ);
       } catch (\Exception $e) { }
