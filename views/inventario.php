@@ -1,6 +1,15 @@
 <br><br>
 <div class="container">
   <div class="row">
+    <div class="input-group col-md-3">
+      <input type="text" class="form-control" name="search" id="_query" placeholder="Buscar productos" autofocus required>
+      <a id="_search" class="btn btn-primary" href="#"><i class="fas fa-search"></i></a>
+    </div>  
+</div>
+  <div class="row">
+    <div class="col-md-3">
+      <p><b><?php echo $matches ?></p>
+    </div>
     <div class="table-responsive">
       <h3 class="text-center">Productos</h3>
       <br>
@@ -28,7 +37,7 @@
             <td><?php echo $row->stock; ?></td>
             <?php if (isset($_SESSION['admin'])): ?>
               <td>
-                <a class="btn btn-warning" href="?b=editarProducto&prod=<?php echo $row->id_producto; ?>&nom=<?php echo $row->nombre; ?>&cos=<?php echo $row->costo ?>&pre=<?php echo $row->precio ?>">
+                <a class="btn btn-warning" href="?b=editarProducto&prod=<?php echo $row->id_producto; ?>&nom=<?php echo $row->nombre; ?>&cos=<?php echo $row->costo ?>&pre=<?php echo $row->precio ?>&page=<?php echo $_GET['pagina'] ?>">
                     <i class="fas fa-edit"></i>
                 </a>
                 <a class="btn btn-success" href="?b=surtPro&prod=<?php echo $row->id_producto; ?>&nom=<?php echo $row->nombre; ?>&sto=<?php echo $row->stock ?>">
@@ -103,3 +112,4 @@
     </div>
   </div>
 </div>
+

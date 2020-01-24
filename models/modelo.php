@@ -35,13 +35,13 @@ session_start();
         $h->bindParam(':precio', $data['precio'], PDO::PARAM_STR);
         $h->bindParam(':stock', $data['stock'], PDO::PARAM_STR);
         $res = $h->execute();
-
+        
       }catch (\Exception $e) {}
-         return $res;
-
+      return $res;
+      
     }
-
-      function listProducts($ini, $fin)
+    
+    function listProducts($ini, $fin)
     {
       try {
         $h = $this->peticion->prepare("SELECT * FROM productos LIMIT $ini, 2");
@@ -50,8 +50,36 @@ session_start();
       } catch (\Exception $e) { }
       return $result;
     }
+    
+    function findProduct($query){
+      $mes = "%".$query."%";
+      try {
+        $h = $this->peticion->prepare("SELECT * FROM productos WHERE nombre LIKE :mes");
+        $h->bindParam(':mes', $mes, PDO::PARAM_STR);
+        $h->execute();
+        
+        $result = $h->fetchAll(PDO::FETCH_OBJ);
+      } catch (\Exception $e) {}
+      // echo "<pre>";
+      // print_r($result);
+      // echo "</pre>";
+      return $result;
+    }
+    
+    function countProductsSearch($query)
+    {
+      $mes = "%".$query."%";
+      try {
+        $h = $this->peticion->prepare("SELECT COUNT(id_producto) AS cant FROM productos WHERE nombre LIKE :mes ");
+        $h->bindParam(':mes', $mes, PDO::PARAM_STR);
+        $h->execute();
+        $result = $h->fetchALL(PDO::FETCH_OBJ);
+      } catch (\Exception $e) { }
+      return $result;
+      // echo "<pre>";print_r($result);echo "</pre>";
+    }
 
-      function countProducts()
+    function countProducts()
     {
       try {
         $h = $this->peticion->prepare("SELECT COUNT(id_producto) AS cant FROM productos");
@@ -210,6 +238,8 @@ session_start();
       } catch (\Exception $e) {}
         return $result;
     }
+    
+
 
     function sellsToday(){
       date_default_timezone_set('America/Bogota');

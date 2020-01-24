@@ -23,7 +23,7 @@
 
 
           <button class="btn btn-warning btn-block" type="submit" name="btn_editarPro">Aceptar</button>
-          <a class="btn btn-secondary btn-block" href="?b=inventario">Cancelar</a>
+          <a class="btn btn-secondary btn-block" href="?b=inventario&pagina=<?php echo $_GET['page'] ?>">Cancelar</a>
         </form>
         </div>
       </div>

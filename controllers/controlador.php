@@ -134,14 +134,39 @@ class Controlador
        elseif (isset($_SESSION['operator'])) {
          include_once('views/operator/header.html');
        }
+
+      
        $ini = ($_GET['pagina']-1)*2;
        $fin = 2 * $ini;
-       $res = $this->o->listProducts($ini, $fin);
-       $res2 = $this->o->countProducts();
-       $rows = $res2[0]->cant;
+
+       if (isset($_GET['search'])) 
+       {
+          $res = $this->o->findProduct($_GET['search'], $ini);
+          $res2 = $this->o->countProductsSearch($_GET['search']);
+          // echo "<pre>"; print_r("encontrados: ".$res2[0]->cant); echo "<br></pre>";
+          $rows = $res2[0]->cant;
+          $matches = $res2[0]->cant."</b> coincindencias";
+        }
+        else
+        {
+          $res = $this->o->listProducts($ini, $fin);
+          $res2 = $this->o->countProducts();
+          
+          $matches = "</b>";
+         $rows = $res2[0]->cant;
+       }
+        if ($_GET['pagina'] > $rows || !isset($_GET['pagina']) || $_GET['pagina'] <= 0)
+        {
+          header("location:?b=inventario&pagina=1");
+        }
+        if (isset($_GET['search']) && empty($_GET['search']) )
+        {
+          header("location:?b=inventario&pagina=1");
+        }
+
        $pages = ceil($rows/2);
-       "<pre>";print_r($res2[0]->cant);echo "</pre>";
-       echo $_GET['pagina'];
+
+
        include_once('views/inventario.php');
        include_once('views/layouts/foot.html');
 
@@ -149,6 +174,18 @@ class Controlador
        header("location:?b=index");
      }
 
+   }
+
+   function findProduct(){
+    if (isset($_SESSION['admin'])) {
+      $query = $_POST['query'];
+        $res = $this->o->findProduct($query);
+        // echo $res;
+        // echo "<pre>";print_r($res);echo "</pre>";
+        echo json_encode($res);
+    }else {
+       header("location:?b=index");
+     }
    }
 
      function editarProducto(){
@@ -165,12 +202,12 @@ class Controlador
         if ($res) {
           echo "<script language='javascript'>";
           echo "alert('¡Producto editado!');";
-          echo "window.location.replace('?b=inventario')";
+          echo "window.location.replace('?b=inventario&pagina=1')";
           echo "</script>";
         }else {
           echo "<script language='javascript'>";
           echo "alert('Ocurrió un error');";
-          echo "window.location.replace('?b=inventario')";
+          echo "window.location.replace('?b=inventario&pagina=1')";
           echo "</script>";
         }
       }
@@ -206,13 +243,13 @@ class Controlador
         if ($res) {
           echo "<script language='javascript'>";
           echo "alert('¡Producto surtido!');";
-          echo "window.location.replace('?b=inventario')";
+          echo "window.location.replace('?b=inventario&pagina=1')";
           echo "</script>";
 
         }else {
           echo "<script language='javascript'>";
           echo "alert('Ocurrió un error');";
-          echo "window.location.replace('?b=inventario')";
+          echo "window.location.replace('?b=inventario&pagina=1')";
           echo "</script>";
         }
       }
