@@ -136,8 +136,8 @@ class Controlador
        }
 
       
-       $ini = ($_GET['pagina']-1)*2;
-       $fin = 2 * $ini;
+       $ini = ($_GET['pagina']-1)*10;
+       $fin = 10 * $ini;
 
        if (isset($_GET['search'])) 
        {
@@ -164,7 +164,7 @@ class Controlador
           header("location:?b=inventario&pagina=1");
         }
 
-       $pages = ceil($rows/2);
+       $pages = ceil($rows/10);
 
 
        include_once('views/inventario.php');
@@ -605,6 +605,11 @@ class Controlador
       $compras = $bal['compras'];
       $ventas  = (int)$bal['ventas'];
       $balance = $ventas - $compras;
+      if ($balance < 0) {
+        $color = "danger"; 
+      }else{
+        $color = "success"; 
+      }
       
       
       

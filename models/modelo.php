@@ -44,7 +44,7 @@ session_start();
     function listProducts($ini, $fin)
     {
       try {
-        $h = $this->peticion->prepare("SELECT * FROM productos LIMIT $ini, 2");
+        $h = $this->peticion->prepare("SELECT * FROM productos LIMIT $ini, 10");
         $h->execute();
         $result = $h->fetchALL(PDO::FETCH_OBJ);
       } catch (\Exception $e) { }
